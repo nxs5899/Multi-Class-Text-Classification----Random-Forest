@@ -4,8 +4,6 @@ import numpy as np
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import LinearSVC
-# from nltk.stem import WordNetLemmatizer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
@@ -15,13 +13,13 @@ from sklearn.ensemble import RandomForestClassifier
 import sqlite3
 import pickle
 
-#connecting tot he database to load the training set data. the below database contains the commit messages and their corresponding labels
+#connecting tot he database to load the data. the below database contains the commit messages and their corresponding labels
 try:
     conn = sqlite3.connect("training_V2.db")
 except Error as e:
     print(e)
 
-#reading the data from the table that contains the training set	
+#reading the data from the table that contains the labels	
 df = pd.read_sql_query('SELECT * FROM filtered', conn)
 df.drop(['id'], 1, inplace=True)
 
@@ -51,7 +49,6 @@ with open('RandomForest.pickle', 'wb') as f:
 ytest = np.array(y_test)
 
 # confusion matrix and classification report(precision, recall, F1-score)
-
 print(confusion_matrix(ytest, model.predict(X_test)))
 print(classification_report(ytest, model.predict(X_test)))
 vectorizer = model.named_steps['vect']
